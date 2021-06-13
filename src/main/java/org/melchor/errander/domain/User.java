@@ -1,9 +1,13 @@
 package org.melchor.errander.domain;
 
 import lombok.Getter;
+import org.melchor.errander.constant.UserGrade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,7 +25,13 @@ public class User extends BaseEntity {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserGrade grade;
+
     @OneToMany
-    private List<Errand> errands;
+    private final List<Errand> errands = new ArrayList<>();
+
+    @OneToMany
+    private final Set<Area> areas = new HashSet<>();
 
 }
