@@ -1,7 +1,10 @@
 package org.melchor.errander.domain;
 
 import lombok.Getter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.melchor.errander.constant.UserGrade;
+import org.melchor.errander.web.payload.UpdateForm;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +14,8 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Table
+@SQLDelete(sql = "UPDATE user SET is_active = false WHERE id = ?")
+@Where(clause = "is_active=1")
 public class User extends BaseEntity {
 
     @Id
@@ -34,4 +38,10 @@ public class User extends BaseEntity {
     @OneToMany
     private final Set<Area> areas = new HashSet<>();
 
+    private boolean isActive;
+
+    public void update(UpdateForm updateForm) {
+        this.name = updateForm.getName();
+        this.password = updateForm.getPassword();
+    }
 }

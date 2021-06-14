@@ -26,22 +26,4 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody JoinForm joinForm) {
-        long userId = authService.join(joinForm);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/{id}")
-                .buildAndExpand(userId)
-                .toUri();
-
-        return ResponseEntity.created(location).build();
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> leaveErrander(@PathVariable Long id, @RequestBody LeaveForm leaveForm) {
-        authService.leave(id, leaveForm);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
 }
