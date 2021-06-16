@@ -1,9 +1,11 @@
-package org.melchor.errander.repository;
+package org.melchor.errander.service;
 
 import lombok.RequiredArgsConstructor;
 import org.melchor.errander.domain.LeaveLog;
 import org.melchor.errander.domain.User;
 import org.melchor.errander.exception.UserNotFoundException;
+import org.melchor.errander.repository.LeaveLogRepository;
+import org.melchor.errander.repository.UserRepository;
 import org.melchor.errander.web.payload.JoinForm;
 import org.melchor.errander.web.payload.LeaveForm;
 import org.melchor.errander.web.payload.UpdateForm;
