@@ -38,7 +38,7 @@ public class ErrandService {
                 .title(errandForm.getTitle())
                 .description(errandForm.getDescription())
                 .category(category)
-                .orderer(null)
+                .ordered(null)
                 .build();
 
         return errandRepository.save(errand).getId();

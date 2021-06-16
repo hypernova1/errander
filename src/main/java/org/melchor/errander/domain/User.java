@@ -38,6 +38,9 @@ public class User extends BaseEntity {
     @OneToMany
     private final Set<Area> areas = new HashSet<>();
 
+    @ManyToMany
+    private final Set<Role> roles = new HashSet<>();
+
     private boolean isActive;
 
     public void update(UpdateForm updateForm) {
