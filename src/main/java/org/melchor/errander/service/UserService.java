@@ -15,6 +15,7 @@ import org.melchor.errander.web.payload.LeaveForm;
 import org.melchor.errander.web.payload.UpdateForm;
 import org.melchor.errander.web.payload.UserDetail;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class UserService {
     private final LeaveLogRepository leaveLogRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDetail findById(Long id) {
         User user = userRepository.findById(id)
@@ -36,6 +38,8 @@ public class UserService {
     }
 
     public long register(JoinForm joinForm) {
+        joinForm.setPassword(passwordEncoder.encode(joinForm.getPassword()));
+
         User user = modelMapper.map(joinForm, User.class);
         Role role = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new AppException("User Role not set."));

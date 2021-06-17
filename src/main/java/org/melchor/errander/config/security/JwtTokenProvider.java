@@ -20,7 +20,6 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     public String generationToken(Authentication authentication) {
-
         AuthenticatedUser memberAccount = (AuthenticatedUser) authentication.getPrincipal();
 
         Date now = new Date();
