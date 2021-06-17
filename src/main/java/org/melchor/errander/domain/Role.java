@@ -16,5 +16,11 @@ public class Role extends BaseEntity {
     private Long id;
 
     private RoleName name;
+
+    public static Role createUserRole() {
+        Role role = new Role();
+        role.name = RoleName.ROLE_USER;
+        return role;
+    }
     
 }

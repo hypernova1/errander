@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private final List<Errand> errands = new ArrayList<>();
 
     @OneToMany
-    private final Set<Area> areas = new HashSet<>();
+    private final List<Area> areas = new ArrayList<>();
 
     @ManyToMany
     private final Set<Role> roles = new HashSet<>();
@@ -46,5 +46,9 @@ public class User extends BaseEntity {
     public void update(UpdateForm updateForm) {
         this.name = updateForm.getName();
         this.password = updateForm.getPassword();
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }
