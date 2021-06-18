@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.melchor.errander.domain.Area;
 import org.melchor.errander.domain.Category;
 import org.melchor.errander.domain.Errand;
+import org.melchor.errander.domain.User;
 import org.melchor.errander.exception.AreaNotFoundException;
 import org.melchor.errander.exception.CategoryNotFoundException;
 import org.melchor.errander.exception.ErrandNotFoundException;
+import org.melchor.errander.exception.UserNotMatchException;
 import org.melchor.errander.repository.AreaRepository;
 import org.melchor.errander.repository.CategoryRepository;
 import org.melchor.errander.repository.ErrandRepository;
@@ -27,7 +29,7 @@ public class ErrandService {
     private final ModelMapper modelMapper;
 
 
-    public Long createErrand(ErrandForm errandForm) {
+    public Long createErrand(ErrandForm errandForm, User user) {
         Area area = areaRepository.findById(errandForm.getAreaId())
                 .orElseThrow(() -> new AreaNotFoundException(errandForm.getAreaId()));
 
@@ -38,7 +40,8 @@ public class ErrandService {
                 .title(errandForm.getTitle())
                 .description(errandForm.getDescription())
                 .category(category)
-                .ordered(null)
+                .area(area)
+                .ordered(user)
                 .build();
 
         return errandRepository.save(errand).getId();
@@ -51,14 +54,25 @@ public class ErrandService {
         return modelMapper.map(errand, ErrandResponse.class);
     }
 
-    public void update(Long id, ErrandForm errandForm) {
+    public void update(Long id, ErrandForm errandForm, User user) {
         Errand errand = errandRepository.findById(id)
                 .orElseThrow(() -> new ErrandNotFoundException(id));
+
+        if (errand.getOrdered() != user) {
+            throw new UserNotMatchException();
+        }
 
         errand.update(errandForm);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, User user) {
+        Errand errand = errandRepository.findById(id)
+                .orElseThrow(() -> new ErrandNotFoundException(id));
+
+        if (errand.getOrdered() != user) {
+            throw new UserNotMatchException();
+        }
+
         errandRepository.deleteById(id);
     }
 }

@@ -1,6 +1,8 @@
 package org.melchor.errander.web.api;
 
 import lombok.RequiredArgsConstructor;
+import org.melchor.errander.config.security.AuthUser;
+import org.melchor.errander.domain.User;
 import org.melchor.errander.service.UserService;
 import org.melchor.errander.web.payload.JoinForm;
 import org.melchor.errander.web.payload.LeaveForm;
@@ -37,14 +39,14 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id, @RequestBody LeaveForm leaveForm) {
-        userService.deleteById(id, leaveForm);
+    public ResponseEntity<?> deleteUser(@PathVariable Long id, @RequestBody LeaveForm leaveForm, @AuthUser User user) {
+        userService.deleteById(id, leaveForm, user);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, UpdateForm updateForm) {
-        userService.update(id, updateForm);
+    public ResponseEntity<?> updateUser(@PathVariable Long id, UpdateForm updateForm, @AuthUser User user) {
+        userService.update(id, updateForm, user);
 
         return ResponseEntity.noContent().build();
     }

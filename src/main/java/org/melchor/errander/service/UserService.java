@@ -7,6 +7,7 @@ import org.melchor.errander.domain.Role;
 import org.melchor.errander.domain.User;
 import org.melchor.errander.exception.AppException;
 import org.melchor.errander.exception.UserNotFoundException;
+import org.melchor.errander.exception.UserNotMatchException;
 import org.melchor.errander.repository.LeaveLogRepository;
 import org.melchor.errander.repository.RoleRepository;
 import org.melchor.errander.repository.UserRepository;
@@ -49,7 +50,14 @@ public class UserService {
     }
 
 
-    public void deleteById(Long id, LeaveForm leaveForm) {
+    public void deleteById(Long id, LeaveForm leaveForm, User authUser) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        if (user != authUser) {
+            throw new UserNotMatchException();
+        }
+
         LeaveLog log = modelMapper.map(leaveForm, LeaveLog.class);
 
         leaveLogRepository.save(log);
@@ -57,9 +65,13 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void update(Long id, UpdateForm updateForm) {
+    public void update(Long id, UpdateForm updateForm, User authUser) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+
+        if (user != authUser) {
+            throw new UserNotMatchException();
+        }
 
         user.update(updateForm);
     }

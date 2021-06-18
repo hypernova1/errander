@@ -1,6 +1,9 @@
 package org.melchor.errander.web.api;
 
 import lombok.RequiredArgsConstructor;
+import org.melchor.errander.config.security.AuthUser;
+import org.melchor.errander.config.security.AuthenticatedUser;
+import org.melchor.errander.domain.User;
 import org.melchor.errander.service.ErrandService;
 import org.melchor.errander.web.payload.ErrandForm;
 import org.melchor.errander.web.payload.ErrandResponse;
@@ -18,8 +21,8 @@ public class ErrandController {
     private final ErrandService errandService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createErrand(@RequestBody ErrandForm errandForm) {
-        Long errandId = errandService.createErrand(errandForm);
+    public ResponseEntity<?> createErrand(@RequestBody ErrandForm errandForm, @AuthUser User user) {
+        Long errandId = errandService.createErrand(errandForm, user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/errand/{id}")
@@ -37,15 +40,15 @@ public class ErrandController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateErrand(@PathVariable Long id, ErrandForm errandForm) {
-        errandService.update(id, errandForm);
+    public ResponseEntity<?> updateErrand(@PathVariable Long id, ErrandForm errandForm, @AuthUser User user) {
+        errandService.update(id, errandForm, user);
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteErrand(@PathVariable Long id) {
-        errandService.delete(id);
+    public ResponseEntity<?> deleteErrand(@PathVariable Long id, @AuthUser User user) {
+        errandService.delete(id, user);
 
         return ResponseEntity.noContent().build();
     }

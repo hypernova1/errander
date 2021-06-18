@@ -35,15 +35,16 @@ public class Errand extends BaseEntity {
     private ErrandState state;
 
     @OneToMany
-    private final Set<Area> areas = new HashSet<>();
+    private final Area area;
 
     private Long tip;
 
     @Builder
-    public Errand(String title, String description, Category category, User ordered) {
+    public Errand(String title, String description, Category category, Area area, User ordered) {
         this.title = title;
         this.description = description;
         this.category = category;
+        this.area = area;
         this.ordered = ordered;
         this.state = ErrandState.WAIT;
     }
