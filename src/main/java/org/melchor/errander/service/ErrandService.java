@@ -62,7 +62,10 @@ public class ErrandService {
             throw new UserNotMatchException();
         }
 
-        errand.update(errandForm);
+        Category category = categoryRepository.findById(errandForm.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException(errandForm.getCategoryId()));
+
+        errand.update(errandForm, category);
     }
 
     public void delete(Long id, User user) {

@@ -1,17 +1,16 @@
 package org.melchor.errander.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import org.melchor.errander.constant.ErrandState;
+import lombok.*;
+import org.melchor.errander.constant.ErrandStatus;
 import org.melchor.errander.web.payload.ErrandForm;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Errand extends BaseEntity {
 
     @Id
@@ -32,10 +31,10 @@ public class Errand extends BaseEntity {
     private User ordered;
 
     @Enumerated(EnumType.STRING)
-    private ErrandState state;
+    private ErrandStatus status;
 
-    @OneToMany
-    private final Area area;
+    @OneToOne
+    private Area area;
 
     private Long tip;
 
@@ -46,11 +45,13 @@ public class Errand extends BaseEntity {
         this.category = category;
         this.area = area;
         this.ordered = ordered;
-        this.state = ErrandState.WAIT;
+        this.status = ErrandStatus.WAIT;
     }
 
-    public void update(ErrandForm errandForm) {
+    public void update(ErrandForm errandForm, Category category) {
         this.title = errandForm.getTitle();
         this.description = errandForm.getDescription();
+        this.status = errandForm.getStatus();
+        this.category = category;
     }
 }

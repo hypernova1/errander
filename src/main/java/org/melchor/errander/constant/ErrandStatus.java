@@ -1,5 +1,5 @@
 package org.melchor.errander.constant;
 
-public enum ErrandState {
+public enum ErrandStatus {
     WAIT, PROGRESS, COMPLETE, REFUND
 }

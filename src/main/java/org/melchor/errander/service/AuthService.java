@@ -20,9 +20,9 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginForm.getEmail(),
-                        loginForm.getPassword();
+                        loginForm.getPassword()
                 )
-        )
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtTokenProvider.generationToken(authentication);
     }
