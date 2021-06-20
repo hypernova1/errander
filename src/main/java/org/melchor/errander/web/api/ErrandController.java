@@ -46,6 +46,13 @@ public class ErrandController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/acknowledgment")
+    public ResponseEntity<?> registerErrander(@PathVariable Long id, @AuthUser User user) {
+        errandService.registerErrander(id, user);
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteErrand(@PathVariable Long id, @AuthUser User user) {
         errandService.delete(id, user);

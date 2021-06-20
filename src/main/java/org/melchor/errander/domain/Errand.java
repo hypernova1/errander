@@ -54,4 +54,8 @@ public class Errand extends BaseEntity {
         this.status = errandForm.getStatus();
         this.category = category;
     }
+
+    public void setErrander(User user) {
+        this.errander = user;
+    }
 }

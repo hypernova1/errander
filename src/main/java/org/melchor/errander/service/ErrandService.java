@@ -5,10 +5,7 @@ import org.melchor.errander.domain.Area;
 import org.melchor.errander.domain.Category;
 import org.melchor.errander.domain.Errand;
 import org.melchor.errander.domain.User;
-import org.melchor.errander.exception.AreaNotFoundException;
-import org.melchor.errander.exception.CategoryNotFoundException;
-import org.melchor.errander.exception.ErrandNotFoundException;
-import org.melchor.errander.exception.UserNotMatchException;
+import org.melchor.errander.exception.*;
 import org.melchor.errander.repository.AreaRepository;
 import org.melchor.errander.repository.CategoryRepository;
 import org.melchor.errander.repository.ErrandRepository;
@@ -77,5 +74,16 @@ public class ErrandService {
         }
 
         errandRepository.deleteById(id);
+    }
+
+    public void registerErrander(Long id, User user) {
+        Errand errand = errandRepository.findById(id)
+                .orElseThrow(() -> new ErrandNotFoundException(id));
+
+        if (errand.getOrdered() == user) {
+            throw new DuplicateRegisterException();
+        }
+
+        errand.setErrander(user);
     }
 }
