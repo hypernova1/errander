@@ -1,6 +1,8 @@
 package org.melchor.errander.web.api;
 
 import lombok.RequiredArgsConstructor;
+import org.melchor.errander.config.security.AuthUser;
+import org.melchor.errander.domain.User;
 import org.melchor.errander.service.AuthService;
 import org.melchor.errander.web.payload.JoinForm;
 import org.melchor.errander.web.payload.LeaveForm;
@@ -19,11 +21,18 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginForm loginForm) {
         String token = authService.login(loginForm);
 
         return ResponseEntity.ok(token);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> logout(@AuthUser User user) {
+        authService.logout(user);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
